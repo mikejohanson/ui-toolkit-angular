@@ -1,3 +1,40 @@
+# [9.1.0](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v9.0.0...v9.1.0) (2025-01-14)
+
+### Features
+
+- allow KVM fullscreen ([607a9c1](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/commit/607a9c18a937a465966f9c5b915b63d697332844))
+
+# [9.0.0](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v8.0.5...v9.0.0) (2025-01-07)
+
+### chore
+
+- update build tasks, package.json and changelog ([#1668](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/issues/1668)) ([17294a2](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/commit/17294a28b6e5eff874dfef7cc9c7edf67fc3195a))
+
+- chore!: address incorrectly released breaking change ([b3a5414](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/commit/b3a541477b4c71795ff0754f501df3f59b61a4a1))
+
+### BREAKING CHANGES
+
+- move to angular 19
+- - build(deps): bump angular 18 to 19
+
+## [8.0.6](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v8.0.5...v8.0.6) (2025-01-07)
+
+### chore
+
+- update build tasks, package.json and changelog ([#1668](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/issues/1668)) ([17294a2](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/commit/17294a28b6e5eff874dfef7cc9c7edf67fc3195a))
+
+### BREAKING CHANGES
+
+- - build(deps): bump angular 18 to 19
+
+## [8.0.5](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v8.0.4...v8.0.5) (2024-11-08)
+
+## [8.0.4](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v8.0.3...v8.0.4) (2024-09-25)
+
+### Bug Fixes
+
+- **sol:** emits data now onKey ([#1521](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/issues/1521)) ([cfc5032](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/commit/cfc5032ed66ffc4830b5cfafb865a2cdeb0981ed))
+
 ## [8.0.3](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v8.0.2...v8.0.3) (2024-08-12)
 
 ## [8.0.2](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v8.0.1...v8.0.2) (2024-07-11)
@@ -12,7 +49,7 @@
 
 ### BREAKING CHANGES
 
-- Converting to Standalone Components for KVM, IDER, and SOL.
+- Converting to Standalone Components for KVM, IDER, and SOL
   As such, standalone requires Angular 17 or newer. - Renamed KvmComponent to KVMComponent - Renamed SolComponent to SOLComponent - Renamed IderComponent to IDER Component - Fixed backwards compatible support to Angular 17
 
 ## [7.2.7](https://github.com/open-amt-cloud-toolkit/ui-toolkit-angular/compare/v7.2.6...v7.2.7) (2024-04-24)

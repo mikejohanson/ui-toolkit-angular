@@ -2,57 +2,55 @@
  * Copyright (c) Intel Corporation 2023
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core'
-import { C, V } from '@angular/cdk/keycodes'
+import { Component, OnInit, input, output } from '@angular/core'
 import { Terminal } from '@xterm/xterm'
 @Component({
   selector: 'amt-terminal',
-  templateUrl: './terminal.component.html',
-  standalone: true
+  templateUrl: './terminal.component.html'
 })
 export class TerminalComponent implements OnInit {
-  @Input() term: Terminal
-  @Output() handleKeyPress: EventEmitter<any> = new EventEmitter<any>()
+  // TODO: Notes from signal input migration:
+  //  Input is initialized to `undefined` but type does not allow this value.
+  //  This worked with `@Input` because your project uses `--strictPropertyInitialization=false`.
+  readonly term = input<Terminal>(undefined!)
+  readonly handleKeyPress = output<any>()
   container!: HTMLElement | null
   ngOnInit(): void {
+    const term = this.term()
+    if (term == null) throw new Error('Terminal not found')
     this.container = document.getElementById('terminal')
     if (this.container == null) throw new Error('Container not found')
-    this.term.open(this.container)
-    this.term.onData((data: any) => {
-      this.handleKeyPress.emit(data)
-    })
-    this.term.attachCustomKeyEventHandler((e: KeyboardEvent): boolean => {
-      e.stopPropagation()
-      // Due to a new 'HACK' in xtermjs, calling e.preventDefault() here
-      // results in all upper case characters being dropped,
-      // so only call it if we 'consume' the keydown here.
-      // Note: this function can be called for 'keypress' and 'keyup' events as well as 'keydown' events
-      if (e.type === 'keydown') {
-        if (e.ctrlKey && e.shiftKey && e.keyCode === C) {
-          e.preventDefault()
+    term.open(this.container)
+    term.onKey(({ key, domEvent }) => {
+      domEvent.preventDefault()
+      if (domEvent.ctrlKey && domEvent.key === 'c') {
+        const termValue = this.term()
+        if (termValue.hasSelection()) {
           navigator.clipboard
-            .writeText(this.term.getSelection())
+            .writeText(termValue.getSelection())
             .then(() => {})
             .catch((err) => {
               console.error('Failed to copy to clipboard', err)
             })
-        } else if (e.ctrlKey && e.shiftKey && e.keyCode === V) {
-          e.preventDefault()
-          navigator.clipboard
-            .readText()
-            .then((text) => {
-              this.handleKeyPress.emit(text)
-            })
-            .catch((err) => {
-              console.error('Failed to read clipboard', err)
-            })
-        } else if (e.code === 'Space') {
-          // or e.keyCode === SPACE
-          e.preventDefault()
-          this.handleKeyPress.emit(e.key)
+        } else {
+          // Send interrupt signal (SIGINT) to terminal
+          termValue.write('\x03') // Sends Ctrl + C (ASCII code 03)
         }
+        // Prevent the default browser behavior (like opening menus)
+        return false
       }
-      return false
+      if (domEvent.ctrlKey && domEvent.key === 'v') {
+        navigator.clipboard
+          .readText()
+          .then((text) => {
+            this.handleKeyPress.emit(text)
+          })
+          .catch((err) => {
+            console.error('Failed to read clipboard', err)
+          })
+        return false
+      }
+      this.handleKeyPress.emit(key)
     })
   }
 }
